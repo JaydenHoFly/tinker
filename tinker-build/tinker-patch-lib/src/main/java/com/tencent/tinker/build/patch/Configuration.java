@@ -90,6 +90,7 @@ public class Configuration {
     public HashSet<Pattern> mSoFilePattern;
     /**
      * dex config
+     * 在Gradle中的dex.pattern中配置，用{@link #addToPatterns(String, HashSet)}方法加载.
      */
     public HashSet<Pattern> mDexFilePattern;
     public HashSet<String>  mDexLoaderPattern;

@@ -85,6 +85,8 @@ public abstract class TinkerApplication extends Application {
     /**
      * @param delegateClassName The fully-qualified name of the {@link ApplicationLifeCycle} class
      *                          that will act as the delegate for application lifecycle callbacks.
+     * 应用启动时只会应用该类，处理业务的ApplicationLike是通过反射访问的，好处是应用启动时不需要创建ApplicationLike实例，patch完成后再通过反射创建实例，使ApplicationLike也可以被热更；
+     *                          ApplicationLike反而是一个代理类，TinkerApplication就是通过它来处理业务逻辑。
      */
     protected TinkerApplication(int tinkerFlags, String delegateClassName,
                                 String loaderClassName, boolean tinkerLoadVerifyFlag) {

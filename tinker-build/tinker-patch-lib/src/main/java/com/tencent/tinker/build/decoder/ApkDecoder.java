@@ -110,6 +110,7 @@ public class ApkDecoder extends BaseDecoder {
 
         unzipApkFiles(oldFile, newFile);
 
+        //遍历整个新apk文件夹，用Visitor处理每个文件
         Files.walkFileTree(mNewApkDir.toPath(), new ApkFilesVisitor(config, mNewApkDir.toPath(), mOldApkDir.toPath(), dexPatchDecoder, soPatchDecoder, resPatchDecoder));
 
         //get all duplicate resource file
@@ -155,9 +156,9 @@ public class ApkDecoder extends BaseDecoder {
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 
-            Path relativePath = newApkPath.relativize(file);
+            Path relativePath = newApkPath.relativize(file);//得到新文件夹中每个文件的相对路径
 
-            Path oldPath = oldApkPath.resolve(relativePath);
+            Path oldPath = oldApkPath.resolve(relativePath);//将新文件的相对路径和旧文件的根路径结合,得到该文件在旧文件夹中的绝对路径(如果存在)
 
             File oldFile = null;
             //is a new file?!
@@ -166,7 +167,7 @@ public class ApkDecoder extends BaseDecoder {
             }
             String patternKey = relativePath.toString().replace("\\", "/");
 
-            if (Utils.checkFileInPattern(config.mDexFilePattern, patternKey)) {
+            if (Utils.checkFileInPattern(config.mDexFilePattern, patternKey)) {//可以在gradle中自定义需要处理的dex文件
                 //also treat duplicate file as unchanged
                 if (Utils.checkFileInPattern(config.mResFilePattern, patternKey) && oldFile != null) {
                     resDuplicateFiles.add(oldFile);

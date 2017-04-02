@@ -1,26 +1,20 @@
 apply plugin: 'com.android.application'
 
-
-
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile "com.android.support:appcompat-v7:23.1.1"
+    compile 'com.android.support:appcompat-v7:23.1.1'
     compile("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}") { changing = true }
     provided("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }
-
-    compile "com.android.support:multidex:1.0.1"
-
+    compile 'com.android.support:multidex:1.0.1'
     //use to test multiDex
-//    compile group: 'com.google.guava', name: 'guava', version: '19.0'
-//    compile "org.scala-lang:scala-library:2.11.7"
-
+    //    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+    //    compile "org.scala-lang:scala-library:2.11.7"
     //use for local maven test
-//    compile("com.tencent.tinker:tinker-android-loader:${TINKER_VERSION}") { changing = true }
-//    compile("com.tencent.tinker:aosp-dexutils:${TINKER_VERSION}") { changing = true }
-//    compile("com.tencent.tinker:bsdiff-util:${TINKER_VERSION}") { changing = true }
-//    compile("com.tencent.tinker:tinker-commons:${TINKER_VERSION}") { changing = true }
-
+    //    compile("com.tencent.tinker:tinker-android-loader:${TINKER_VERSION}") { changing = true }
+    //    compile("com.tencent.tinker:aosp-dexutils:${TINKER_VERSION}") { changing = true }
+    //    compile("com.tencent.tinker:bsdiff-util:${TINKER_VERSION}") { changing = true }
+    //    compile("com.tencent.tinker:tinker-commons:${TINKER_VERSION}") { changing = true }
 }
 
 def gitSha() {
@@ -40,7 +34,6 @@ def javaVersion = JavaVersion.VERSION_1_7
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     compileOptions {
         sourceCompatibility javaVersion
         targetCompatibility javaVersion
@@ -49,7 +42,6 @@ android {
     dexOptions {
         jumboMode = true
     }
-
     signingConfigs {
         release {
             try {
@@ -66,7 +58,6 @@ android {
             storeFile file("./keystore/debug.keystore")
         }
     }
-
     defaultConfig {
         applicationId "tinker.sample.android"
         minSdkVersion 10
@@ -88,13 +79,11 @@ android {
          * so we can get the newly git version easily!
          */
         buildConfigField "String", "TINKER_ID", "\"${getTinkerIdValue()}\""
-        buildConfigField "String", "PLATFORM",  "\"all\""
+        buildConfigField "String", "PLATFORM", "\"all\""
     }
-
 //    aaptOptions{
 //        cruncherEnabled false
 //    }
-
 //    //use to test flavors support
 //    productFlavors {
 //        flavor1 {
@@ -105,7 +94,6 @@ android {
 //            applicationId 'tinker.sample.android.flavor2'
 //        }
 //    }
-
     buildTypes {
         release {
             minifyEnabled true
@@ -123,6 +111,15 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    productFlavors {
+        qihu {
+            minSdkVersion 10
+            applicationId 'tinker.sample.android'
+            targetSdkVersion 22
+            versionCode 1
+            versionName '1.0.0'
+        }
+    }
 }
 
 def bakPath = file("${buildDir}/bakApk/")
@@ -138,14 +135,14 @@ ext {
 
     //for normal build
     //old apk file to build patch apk
-    tinkerOldApkPath = "${bakPath}/app-debug-1018-17-32-47.apk"
+    tinkerOldApkPath = "${bakPath}/app-debug-0308-17-52-23.apk"
     //proguard mapping file to build patch apk
     tinkerApplyMappingPath = "${bakPath}/app-debug-1018-17-32-47-mapping.txt"
     //resource R.txt to build patch apk, must input if there is resource changed
     tinkerApplyResourcePath = "${bakPath}/app-debug-1018-17-32-47-R.txt"
 
     //only use for build all flavor, if not, just ignore this field
-    tinkerBuildFlavorDirectory = "${bakPath}/app-1018-17-32-47"
+    tinkerBuildFlavorDirectory = "${bakPath}/app-0308-17-52-23"
 }
 
 
@@ -270,7 +267,7 @@ if (buildWithTinker()) {
              * Warning, it is very very important, loader classes can't change with patch.
              * thus, they will be removed from patch dexes.
              * you must put the following class into main dex.
-             * Simply, you should add your own application {@code tinker.sample.android.SampleApplication}
+             * Simply, you should add your own application {@code tinker.sample.android.SampleApplicationLike}
              * own tinkerLoader, and the classes you use in them
              *
              */

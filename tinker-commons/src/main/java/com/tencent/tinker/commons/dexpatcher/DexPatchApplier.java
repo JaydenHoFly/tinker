@@ -64,7 +64,13 @@ import java.util.Arrays;
  * Created by tangyinsheng on 2016/6/30.
  */
 public class DexPatchApplier {
+    /**
+     * 基准apk包输入流构造的Dex实例
+     */
     private final Dex oldDex;
+    /**
+     * 补丁apk包输入流构造的Dex实例
+     */
     private final Dex patchedDex;
 
     private final DexPatchFile patchFile;
@@ -108,6 +114,7 @@ public class DexPatchApplier {
     public void executeAndSaveTo(OutputStream out) throws IOException {
         // Before executing, we should check if this patch can be applied to
         // old dex we passed in.
+        // 首先old apk的签名和patchfile所携带的old apk签名是否一致，不一致则抛出异常
         byte[] oldDexSign = this.oldDex.computeSignature(false);
         if (oldDexSign == null) {
             throw new IOException("failed to compute old dex's signature.");
@@ -128,6 +135,7 @@ public class DexPatchApplier {
 
         // Firstly, set sections' offset after patched, sort according to their offset so that
         // the dex lib of aosp can calculate section size.
+        // patchedDex是最终合成的dex，首先设定各个区域的偏移量
         TableOfContents patchedToc = this.patchedDex.getTableOfContents();
 
         patchedToc.header.off = 0;
@@ -176,6 +184,7 @@ public class DexPatchApplier {
         patchedToc.computeSizesFromOffsets();
 
         // Secondly, run patch algorithms according to sections' dependencies.
+        // 对每个区域进行patch操作
         this.stringDataSectionPatchAlg = new StringDataSectionPatchAlgorithm(
                 patchFile, oldDex, patchedDex, oldToPatchedIndexMap
         );
@@ -248,6 +257,7 @@ public class DexPatchApplier {
         this.patchedDex.writeHashes();
 
         // Finally, write patched dex to file.
+        //合成全量dex文件，下次启动时在TinkerApplication#onBaseContextAttached如果检测到，将会直接加载
         this.patchedDex.writeTo(out);
     }
 

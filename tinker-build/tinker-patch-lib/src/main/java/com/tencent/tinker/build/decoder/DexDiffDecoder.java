@@ -110,6 +110,11 @@ public class DexDiffDecoder extends BaseDecoder {
         return oldDexFile != null ? getRelativePathStringToOldFile(oldDexFile) : getRelativePathStringToNewFile(newDexFile);
     }
 
+    /**
+     * 首先检测输入的dex文件中是否有不允许修改的类被修改了，如loader相关的类是不允许被修改的，这种情况下会抛出异常；
+     * 如果dex是新增的，直接将该dex拷贝到结果文件；
+     * 如果dex是修改的，收集增加和删除的class。oldAndNewDexFilePairList将新旧dex对应关系保存起来，用于后面的分析。
+     */
     @SuppressWarnings("NewApi")
     @Override
     public boolean patch(final File oldFile, final File newFile) throws IOException, TinkerPatchException {

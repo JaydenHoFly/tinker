@@ -60,6 +60,9 @@ public final class ExcludedClassModifiedChecker {
         this.dexCmptor = new DexClassesComparator(config.mDexLoaderPattern);
     }
 
+    /**
+     * 检查和Loader相关的类是不是在新apk的第一个dex中，是否和旧apk中保持一致。
+     */
     public void checkIfExcludedClassWasModifiedInNewDex(File oldFile, File newFile) throws IOException, TinkerPatchException {
         if (oldFile == null && newFile == null) {
             throw new TinkerPatchException("both oldFile and newFile are null.");

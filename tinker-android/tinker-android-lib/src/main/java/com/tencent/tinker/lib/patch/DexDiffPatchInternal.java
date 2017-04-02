@@ -492,7 +492,7 @@ public class DexDiffPatchInternal extends BasePatchInternal {
      * @param patchInfo
      *   Parsed patch info from package-meta.txt
      * @param patchedDexFile
-     *   Patched dex file, may be a jar.
+     *   Patched dex file, may be a jar.生成的全量dex文件
      *
      * <b>Notice: patchFileEntry and smallPatchInfoFile cannot both be null.</b>
      *
@@ -504,6 +504,7 @@ public class DexDiffPatchInternal extends BasePatchInternal {
         InputStream oldDexStream = null;
         InputStream patchFileStream = null;
         try {
+            //基准apk的输入流
             oldDexStream = new BufferedInputStream(baseApk.getInputStream(oldDexEntry));
             patchFileStream = (patchFileEntry != null ? new BufferedInputStream(patchPkg.getInputStream(patchFileEntry)) : null);
 

@@ -62,6 +62,8 @@ public class Runner {
             //gen patch
             ApkDecoder decoder = new ApkDecoder(config);
             decoder.onAllPatchesStart();
+//            会先对manifest文件进行检测，看其是否有更改，如果发现manifest的组件有新增，则抛出异常，因为目前Tinker暂不支持四大组件的新增。
+//            检测通过后解压apk文件，遍历新旧apk，交给ApkFilesVisitor进行处理。
             decoder.patch(config.mOldApkFile, config.mNewApkFile);
             decoder.onAllPatchesEnd();
 

@@ -40,7 +40,7 @@ public class DefaultPatchListener implements PatchListener {
     /**
      * when we receive a patch, what would we do?
      * you can overwrite it
-     *
+     * 收到服务器下发的补丁包后的回调
      * @param path
      * @return
      */

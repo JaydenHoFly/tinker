@@ -188,6 +188,7 @@ public class SystemClassLoaderAdder {
             Field pathListField = ShareReflectUtil.findField(loader, "pathList");
             Object dexPathList = pathListField.get(loader);
             ArrayList<IOException> suppressedExceptions = new ArrayList<IOException>();
+            //dexPathList是DexPathList的实例，利用反射调用dexPathList的方法注入Element[]，注入的Element[]包含了合成了补丁dex之后的全部dex文件.
             ShareReflectUtil.expandFieldArray(dexPathList, "dexElements", makeDexElements(dexPathList,
                 new ArrayList<File>(additionalClassPathEntries), optimizedDirectory,
                 suppressedExceptions));

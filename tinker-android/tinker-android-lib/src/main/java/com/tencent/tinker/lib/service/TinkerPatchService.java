@@ -36,6 +36,9 @@ import java.io.File;
 
 /**
  * Created by zhangshaowen on 16/3/14.
+ * 当app收到服务器下发的补丁后，会触发DefaultPatchListener.onPatchReceived事件，
+ * 调用TinkerPatchService.runPatchService启动patch进程进行补丁patch工作。
+ * UpgradePatch.tryPatch()中会首先检查补丁的合法性，签名，以及是否安装过补丁，检查通过后会尝试dex，so以及res文件的patch。
  */
 public class TinkerPatchService extends IntentService {
     private static final String TAG = "Tinker.TinkerPatchService";
