@@ -111,6 +111,9 @@ public class DexPatchApplier {
         this.oldToPatchedIndexMap = new SparseIndexMap();
     }
 
+    /**
+     * MARK 生成全量dex
+     */
     public void executeAndSaveTo(OutputStream out) throws IOException {
         // Before executing, we should check if this patch can be applied to
         // old dex we passed in.

@@ -224,6 +224,7 @@ public class TinkerLoader extends AbstractTinkerLoader {
             return;
         }
         //now we can load patch jar
+        //MARK
         if (isEnabledForDex) {
             boolean loadTinkerJars = TinkerDexLoader.loadTinkerJars(app, tinkerLoadVerifyFlag, patchVersionDirectory, resultIntent, isSystemOTA);
             if (!loadTinkerJars) {

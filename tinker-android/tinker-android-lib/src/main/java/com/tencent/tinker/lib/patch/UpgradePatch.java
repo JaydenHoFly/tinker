@@ -129,7 +129,7 @@ public class UpgradePatch extends AbstractPatch {
         }
 
         //we use destPatchFile instead of patchFile, because patchFile may be deleted during the patch process
-        //将补丁包复制到destPatchFile中，用补丁包路径的md5前8位组合成patchVersionDirectory，尝试合成全量dex
+        //MARK 将补丁包复制到destPatchFile中，用补丁包路径的md5前8位组合成patchVersionDirectory，尝试合成全量dex
         if (!DexDiffPatchInternal.tryRecoverDexFiles(manager, signatureCheck, context, patchVersionDirectory, destPatchFile)) {
             TinkerLog.e(TAG, "UpgradePatch tryPatch:new patch recover, try patch dex failed");
             return false;

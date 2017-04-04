@@ -143,6 +143,7 @@ public class TinkerDexLoader {
                 return false;
             }
         }
+        //MARK
         try {
             SystemClassLoaderAdder.installDexes(application, classLoader, optimizeDir, legalFiles);
         } catch (Throwable e) {

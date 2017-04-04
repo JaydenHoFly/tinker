@@ -113,7 +113,7 @@ public class DexDiffDecoder extends BaseDecoder {
     /**
      * 首先检测输入的dex文件中是否有不允许修改的类被修改了，如loader相关的类是不允许被修改的，这种情况下会抛出异常；
      * 如果dex是新增的，直接将该dex拷贝到结果文件；
-     * 如果dex是修改的，收集增加和删除的class。oldAndNewDexFilePairList将新旧dex对应关系保存起来，用于后面的分析。
+     * 如果dex是修改的，收集增加和删除的class. oldAndNewDexFilePairList将新旧dex对应关系保存起来，用于后面的分析。
      */
     @SuppressWarnings("NewApi")
     @Override
@@ -149,6 +149,7 @@ public class DexDiffDecoder extends BaseDecoder {
         final String newMd5 = getRawOrWrappedDexMD5(newFile);
 
         //new add file
+        //MARK 如果是新增的dex文件,直接拷贝到输出目录
         if (oldFile == null || !oldFile.exists() || oldFile.length() == 0) {
             hasDexChanged = true;
             copyNewDexAndLogToDexMeta(newFile, newMd5, dexDiffOut);
@@ -283,6 +284,9 @@ public class DexDiffDecoder extends BaseDecoder {
         }
     }
 
+    /**
+     * 利用DexPatchGenerator生成增量dex文件,并补全RelatedInfo
+     */
     private void diffDexPairAndFillRelatedInfo(File oldDexFile, File newDexFile, RelatedInfo relatedInfo) {
         File tempFullPatchDexPath = new File(config.mOutFolder + File.separator + TypedValue.DEX_TEMP_PATCH_DIR);
         final String dexName = getRelativeDexName(oldDexFile, newDexFile);

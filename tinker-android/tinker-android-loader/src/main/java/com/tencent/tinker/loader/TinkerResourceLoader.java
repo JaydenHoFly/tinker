@@ -61,6 +61,8 @@ public class TinkerResourceLoader {
             Log.i(TAG, "verify resource file:" + resourceFile.getPath() + " md5, use time: " + (System.currentTimeMillis() - start));
         }
         try {
+            //MARK 利用AssetManager的addAssetPath方法添加资源路径,由于ResourceManager#mActiveResources持有所有的Resources对象,
+            //所以将AssetManager对象赋给ResourceManager#mActiveResources中所有的Resources对象,全量替换app资源,这样一来,调用Context#getResources方法拿到的Resoources对象就可以访问外部资源了.
             TinkerResourcePatcher.monkeyPatchExistingResources(context, resourceString);
             Log.i(TAG, "monkeyPatchExistingResources resource file:" + resourceString + ", use time: " + (System.currentTimeMillis() - start));
         } catch (Throwable e) {

@@ -288,6 +288,9 @@ public class DexPatchGenerator {
         }
     }
 
+    /**
+     * MARK 根据15个dex区域的比较算法对dex的各个区域进行比较，最后生成dex文件的差异，是整个dex diff算法的核心
+     */
     public void executeAndSaveTo(OutputStream out) throws IOException {
         // Firstly, collect information of items we want to remove additionally
         // in new dex and set them to corresponding diff algorithm implementations.

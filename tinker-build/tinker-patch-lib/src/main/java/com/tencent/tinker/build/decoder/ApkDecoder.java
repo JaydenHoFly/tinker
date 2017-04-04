@@ -173,6 +173,7 @@ public class ApkDecoder extends BaseDecoder {
                     resDuplicateFiles.add(oldFile);
                 }
 
+                //先分析新旧apk中的文件,然后在onPatchEnds中进行对比生成增量dex文件.
                 try {
                     dexDecoder.patch(oldFile, file.toFile());
                 } catch (Exception e) {

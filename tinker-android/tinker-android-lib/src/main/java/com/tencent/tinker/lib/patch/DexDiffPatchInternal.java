@@ -381,6 +381,7 @@ public class DexDiffPatchInternal extends BasePatchInternal {
                         return false;
                     }
 
+                    //MARK 合成全量dex
                     patchDexFile(apk, patch, rawApkFileEntry, patchFileEntry, info, extractedFile);
 
                     if (!SharePatchFileUtil.verifyDexFileMd5(extractedFile, extractedFileMd5)) {
@@ -492,7 +493,7 @@ public class DexDiffPatchInternal extends BasePatchInternal {
      * @param patchInfo
      *   Parsed patch info from package-meta.txt
      * @param patchedDexFile
-     *   Patched dex file, may be a jar.生成的全量dex文件
+     *   Patched dex file, may be a jar.MARK 生成的全量dex文件
      *
      * <b>Notice: patchFileEntry and smallPatchInfoFile cannot both be null.</b>
      *
@@ -526,6 +527,7 @@ public class DexDiffPatchInternal extends BasePatchInternal {
                             if (entry == null) {
                                 throw new TinkerRuntimeException("can't recognize zip dex format file:" + patchedDexFile.getAbsolutePath());
                             }
+                            //MARK 生成全量dex
                             new DexPatchApplier(zis, patchFileStream).executeAndSaveTo(zos);
                         } finally {
                             SharePatchFileUtil.closeQuietly(zis);

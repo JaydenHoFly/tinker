@@ -143,6 +143,7 @@ class TinkerResourcePatcher {
             throw new IllegalStateException("resource references is null");
         }
         try {
+            //MARK 获取Resources中的AssetManager对象
             assetsFiled = Resources.class.getDeclaredField("mAssets");
             assetsFiled.setAccessible(true);
         } catch (Throwable ignore) {
@@ -162,6 +163,7 @@ class TinkerResourcePatcher {
     }
 
     /**
+     * 通过AssertManager的addAssetPath函数，加入外部的资源路径，然后将Resources的mAssets的字段设为前面的AssertManager，这样在通过getResources去获取资源的时候就可以获取到外部的资源
      * @param context
      * @param externalResourceFile
      * @throws Throwable
@@ -186,6 +188,7 @@ class TinkerResourcePatcher {
             }
         }
         // Create a new AssetManager instance and point it to the resources installed under
+        //MARK 创建新的AssetManager对象并调用addAssetPath方法添加资源路径
         if (((Integer) addAssetPathMethod.invoke(newAssetManager, externalResourceFile)) == 0) {
             throw new IllegalStateException("Could not create new AssetManager");
         }
@@ -199,6 +202,7 @@ class TinkerResourcePatcher {
             //pre-N
             if (resources != null) {
                 // Set the AssetManager of the Resources instance to our brand new one
+                //MARK 用包含了合并后的资源路径的AssetManager对象替换Resources中的AssetManager,这样一来,ResourcesManager中的所有Resources访问的都是合并后的资源路径,也就能访问补丁包中的资源了.
                 try {
                     assetsFiled.set(resources, newAssetManager);
                 } catch (Throwable ignore) {
