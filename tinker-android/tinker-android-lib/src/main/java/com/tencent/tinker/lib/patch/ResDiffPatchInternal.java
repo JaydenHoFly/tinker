@@ -64,6 +64,7 @@ public class ResDiffPatchInternal extends BasePatchInternal {
         }
 
         long begin = SystemClock.elapsedRealtime();
+        //MARK
         boolean result = patchResourceExtractViaResourceDiff(context, patchVersionDirectory, resourceMeta, patchFile);
         long cost = SystemClock.elapsedRealtime() - begin;
         TinkerLog.i(TAG, "recover resource result:%b, cost:%d", result, cost);
@@ -118,6 +119,7 @@ public class ResDiffPatchInternal extends BasePatchInternal {
             }
             String apkPath = applicationInfo.sourceDir;
 
+            //MARK 用bsdiff逆向合成资源文件
             if (!checkAndExtractResourceLargeFile(context, apkPath, directory, patchFile, resPatchInfo, type)) {
                 return false;
             }
@@ -131,6 +133,7 @@ public class ResDiffPatchInternal extends BasePatchInternal {
                 oldApk = new TinkerZipFile(apkPath);
                 newApk = new TinkerZipFile(patchFile);
                 final Enumeration<? extends TinkerZipEntry> entries = oldApk.entries();
+                //MARK 提取旧Apk中的资源文件
                 while (entries.hasMoreElements()) {
                     TinkerZipEntry zipEntry = entries.nextElement();
                     if (zipEntry == null) {
@@ -162,6 +165,7 @@ public class ResDiffPatchInternal extends BasePatchInternal {
                 ResUtil.extractTinkerEntry(oldApk, manifestZipEntry, out);
                 totalEntryCount++;
 
+                //将bsdiff合成的文件与旧apk中提取的文件进行合并
                 for (String name : resPatchInfo.largeModRes) {
                     TinkerZipEntry largeZipEntry = oldApk.getEntry(name);
                     if (largeZipEntry == null) {
@@ -294,6 +298,7 @@ public class ResDiffPatchInternal extends BasePatchInternal {
                 try {
                     oldStream = apkFile.getInputStream(baseEntry);
                     newStream = patchZipFile.getInputStream(patchEntry);
+                    //MARK
                     BSPatch.patchFast(oldStream, newStream, largeModeInfo.file);
                 } finally {
                     SharePatchFileUtil.closeQuietly(oldStream);
