@@ -33,7 +33,6 @@ import com.tencent.tinker.android.dex.StringData;
 import com.tencent.tinker.android.dex.TableOfContents;
 import com.tencent.tinker.android.dex.TypeList;
 import com.tencent.tinker.android.dex.util.CompareUtils;
-import com.tencent.tinker.commons.dexpatcher.util.SparseIndexMap;
 import com.tencent.tinker.commons.dexpatcher.algorithms.patch.AnnotationSectionPatchAlgorithm;
 import com.tencent.tinker.commons.dexpatcher.algorithms.patch.AnnotationSetRefListSectionPatchAlgorithm;
 import com.tencent.tinker.commons.dexpatcher.algorithms.patch.AnnotationSetSectionPatchAlgorithm;
@@ -51,6 +50,7 @@ import com.tencent.tinker.commons.dexpatcher.algorithms.patch.StringDataSectionP
 import com.tencent.tinker.commons.dexpatcher.algorithms.patch.TypeIdSectionPatchAlgorithm;
 import com.tencent.tinker.commons.dexpatcher.algorithms.patch.TypeListSectionPatchAlgorithm;
 import com.tencent.tinker.commons.dexpatcher.struct.DexPatchFile;
+import com.tencent.tinker.commons.dexpatcher.util.SparseIndexMap;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -112,7 +112,7 @@ public class DexPatchApplier {
     }
 
     /**
-     * MARK 生成全量dex
+     * MARK 合成全量dex
      */
     public void executeAndSaveTo(OutputStream out) throws IOException {
         // Before executing, we should check if this patch can be applied to

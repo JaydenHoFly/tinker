@@ -161,6 +161,7 @@ public class DexDiffDecoder extends BaseDecoder {
         if ((oldMd5 != null && !oldMd5.equals(newMd5)) || (oldMd5 == null && newMd5 != null)) {
             hasDexChanged = true;
             if (oldMd5 != null) {
+                //收集增删的文件信息
                 collectAddedOrDeletedClasses(oldFile, newFile);
             }
         }
